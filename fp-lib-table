@@ -13,6 +13,7 @@
   (lib (name "MIKILAB_hdmi")(type "KiCad")(uri "${KIPRJMOD}/footprints/interface/hdmi.pretty")(options "")(descr "hdmi.pretty"))
   (lib (name "MIKILAB_usb3_esd_son50_10")(type "KiCad")(uri "${KIPRJMOD}/footprints/interface/usb3_esd_son50-10.pretty")(options "")(descr "usb3_esd_son50-10.pretty"))
   (lib (name "MIKILAB_usb3_micro_ab")(type "KiCad")(uri "${KIPRJMOD}/footprints/interface/usb3_micro_ab.pretty")(options "")(descr "usb3_micro_ab.pretty"))
+  (lib (name "MIKILAB_TS3425UA_3x4x2_5_160")(type "KiCad")(uri "${KIPRJMOD}/footprints/mechanical/TS3425UA-3x4x2.5-160.pretty")(options "")(descr "TS3425UA-3x4x2.5-160.pretty"))
   (lib (name "MIKILAB_ESP32_C3_MINI_1")(type "KiCad")(uri "${KIPRJMOD}/footprints/microcontrollers/ESP32-C3-MINI-1.pretty")(options "")(descr "ESP32-C3-MINI-1.pretty"))
   (lib (name "MIKILAB_ESP32_C3_WROOM_02")(type "KiCad")(uri "${KIPRJMOD}/footprints/microcontrollers/ESP32-C3-WROOM-02.pretty")(options "")(descr "ESP32-C3-WROOM-02.pretty"))
   (lib (name "MIKILAB_ESP32_C5_WROOM_1")(type "KiCad")(uri "${KIPRJMOD}/footprints/microcontrollers/ESP32-C5-WROOM-1.pretty")(options "")(descr "ESP32-C5-WROOM-1.pretty"))

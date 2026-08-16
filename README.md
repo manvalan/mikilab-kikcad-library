@@ -258,6 +258,25 @@ reference *standard* KiCad footprint libraries (e.g. `Package_SO`,
 scope (they ship with every KiCad install) and are not checked or
 reported as errors.
 
+### TS3425UA-3x4x2.5-160 (Chuangdou SMD tactile switch)
+
+Symbol + footprint reconstructed the same way as FSC-BT1035, from the
+same `manvalan/DigiRadio` EasyEDA project (4 `PAD` + `POLY` records for
+the footprint, 4 `PIN` records for the symbol). Cross-checked against
+the manufacturer's own datasheet (found via the same project's
+`Hardware/DATASHEET/TS3425UA.pdf`): body 4.2 x 3.4mm, actuator 3.0 x 2.5
+x 1.9mm, 160gf actuation, and critically its own circuit diagram, which
+shows the 4 legs as **two independent, mechanically-ganged contact
+pairs** (pins ①-② and ③-④, both closing together on a single press) --
+the symbol here reproduces that same two-switch depiction rather than
+inventing a simplified SPST. Pin numbers were preserved exactly as
+extracted from the source (kept internally consistent between the
+symbol and footprint, i.e. schematic pin "N" always nets to footprint
+pad "N" -- their absolute position on the page doesn't need to match
+the datasheet's own circle-number diagram for this to be electrically
+correct, since a symmetric ganged switch has no "wrong side"). No 3D
+model included.
+
 ### FSC-BT1035 (Feasycom Bluetooth module)
 
 `symbols/rf/FSC-BT1035.kicad_sym` (Feasycom Bluetooth 5.2 dual-mode
