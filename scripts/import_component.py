@@ -1,0 +1,240 @@
+#!/usr/bin/env python3
+"""
+import_component.py
+====================
+
+Import a single component (symbol + optional footprint + optional 3D model)
+into the MIKILAB KiCad library.
+
+Usage:
+    python3 scripts/import_component.py \\
+        --name TPS7A2018PDBVR \\
+        --symbol /path/to/TPS7A2018PDBVR.kicad_sym \\
+        --footprint /path/to/SOT95P280X145-5N.kicad_mod \\
+        --model /path/to/TPS7A2018PDBVR.step \\
+        --category power
+
+A component may be imported with just a symbol, symbol+footprint, or
+symbol+footprint+3D model. --category is optional; if omitted it is
+inferred from --name using the same classification rules used elsewhere
+in this library.
+
+Never overwrites an existing component. Never silently duplicates a
+footprint that already exists byte-for-byte elsewhere in the library --
+it is reused instead. A footprint with a colliding filename but different
+content is given a distinct, semantically-derived name and the collision
+is documented in the report and in MANIFEST.csv.
+
+After a successful import, sym-lib-table and fp-lib-table are fully
+regenerated from the contents of the library directory tree, which
+guarantees there is never more than one "(version 7)" entry and that
+every library on disk is registered exactly once.
+"""
+
+from __future__ import annotations
+
+import argparse
+import shutil
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import lib_common as lc
+
+ROOT = lc.LIBRARY_ROOT
+
+
+class ImportError_(Exception):
+    pass
+
+
+def validate_args(args) -> None:
+    if not args.name.strip():
+        raise ImportError_("--name must not be empty")
+
+    for label, value in (("--symbol", args.symbol), ("--footprint", args.footprint), ("--model", args.model)):
+        if value is not None and not Path(value).expanduser().is_file():
+            raise ImportError_(f"{label} does not exist or is not a file: {value}")
+
+    if args.model and not args.footprint:
+        raise ImportError_("--model requires --footprint (a 3D model needs a footprint to attach to)")
+
+    if args.category and args.category not in lc.CATEGORIES:
+        raise ImportError_(
+            f"--category '{args.category}' is not one of the known categories: "
+            + ", ".join(lc.CATEGORIES)
+        )
+
+
+def import_symbol(name: str, category: str, src: Path, manifest_rows: list, report: list) -> Path:
+    existing = lc.find_symbol_by_name(ROOT, name)
+    if existing is not None:
+        raise ImportError_(
+            f"A component named '{name}' already exists: {existing.relative_to(ROOT)}. "
+            f"Refusing to overwrite -- choose a different --name or remove the existing "
+            f"component first."
+        )
+
+    dst = ROOT / "symbols" / category / f"{name}.kicad_sym"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+
+    digest = lc.sha256_file(src)
+    shutil.copy2(src, dst)
+
+    manifest_rows.append(["symbol", str(src), str(dst.relative_to(ROOT)), "NEW", digest, f"category={category}"])
+    report.append(f"  SYMBOL   NEW        {dst.relative_to(ROOT)}")
+    return dst
+
+
+def import_footprint(name: str, category: str, src: Path, manifest_rows: list, report: list):
+    """Returns (footprint_path_or_None_if_reused, fp_nickname, fp_name, status)."""
+    digest = lc.sha256_file(src)
+
+    existing = lc.find_footprint_by_hash(ROOT, digest)
+    if existing is not None:
+        pretty_dir = existing.parent
+        nickname = lc.fp_nickname(pretty_dir)
+        manifest_rows.append([
+            "footprint", str(src), str(existing.relative_to(ROOT)), "DUPLICATE", digest,
+            f"reused existing identical footprint instead of duplicating; category={category}",
+        ])
+        report.append(f"  FOOTPRINT DUPLICATE  reused {existing.relative_to(ROOT)}")
+        return None, nickname, existing.stem, "DUPLICATE"
+
+    pretty_dir = ROOT / "footprints" / category / f"{name}.pretty"
+    basename = src.name
+
+    colliding = lc.find_footprints_by_basename(ROOT, basename)
+    if colliding:
+        new_basename = f"{name}_{src.stem}{src.suffix}"
+        note = (
+            f"filename collision with {', '.join(str(p.relative_to(ROOT)) for p in colliding)} "
+            f"(different content, verified by SHA256) -> renamed to '{new_basename}'"
+        )
+        target = pretty_dir / new_basename
+        status = "RENAMED_COLLISION"
+    else:
+        target = pretty_dir / basename
+        status = "NEW"
+        note = f"category={category}"
+
+    pretty_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, target)
+
+    manifest_rows.append(["footprint", str(src), str(target.relative_to(ROOT)), status, digest, note])
+    report.append(f"  FOOTPRINT {status:11} {target.relative_to(ROOT)}")
+
+    nickname = lc.fp_nickname(pretty_dir)
+    return target, nickname, target.stem, status
+
+
+def import_model(name: str, category: str, src: Path, footprint_path: Path | None, manifest_rows: list, report: list):
+    dst = ROOT / "3dmodels" / category / f"{name}{src.suffix.lower()}"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+
+    digest = lc.sha256_file(src)
+    final, status = lc.unique_destination(dst, digest)
+
+    if status != "DUPLICATE":
+        shutil.copy2(src, final)
+
+    manifest_rows.append(["3d-model", str(src), str(final.relative_to(ROOT)), status, digest, f"category={category}"])
+    report.append(f"  3D MODEL  {status:11} {final.relative_to(ROOT)}")
+
+    if footprint_path is None:
+        report.append(
+            "  NOTE: footprint was reused from an existing shared library; the 3D model "
+            "was copied but NOT embedded in that footprint (it may already be used by "
+            "another component with a different 3D body -- assign it manually per-instance "
+            "in the PCB editor if needed)."
+        )
+        return
+
+    text = footprint_path.read_text(encoding="utf-8")
+    model_uri = "${KIPRJMOD}/" + str(final.relative_to(ROOT))
+
+    if "(model " in text:
+        report.append(
+            f"  NOTE: {footprint_path.relative_to(ROOT)} already has a 3D model reference; "
+            f"leaving it untouched. New model is available at {final.relative_to(ROOT)}."
+        )
+        return
+
+    block = (
+        f"  (model {model_uri}\n"
+        f"    (offset (xyz 0 0 0))\n"
+        f"    (scale (xyz 1 1 1))\n"
+        f"    (rotate (xyz 0 0 0))\n"
+        f"  )\n"
+    )
+    assert text.rstrip().endswith(")")
+    idx = text.rstrip().rfind(")")
+    text = text.rstrip()[:idx] + block + ")\n"
+    footprint_path.write_text(text, encoding="utf-8")
+    report.append(f"  Linked 3D model into {footprint_path.relative_to(ROOT)}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Import a single component into the MIKILAB library.")
+    parser.add_argument("--name", required=True, help="Component name (used as the symbol/footprint base name)")
+    parser.add_argument("--category", choices=lc.CATEGORIES, help="MIKILAB category (auto-detected from --name if omitted)")
+    parser.add_argument("--symbol", required=True, help="Path to the source .kicad_sym file")
+    parser.add_argument("--footprint", help="Path to the source .kicad_mod file")
+    parser.add_argument("--model", help="Path to the source 3D model (.step/.stp/.wrl/.wrz)")
+    args = parser.parse_args()
+
+    try:
+        validate_args(args)
+    except ImportError_ as e:
+        print(f"ERROR: {e}")
+        return 1
+
+    name = args.name.strip()
+    category = args.category or lc.classify(name)
+    manifest_rows: list[list[str]] = []
+    report: list[str] = [f"Importing '{name}' into category '{category}'"]
+
+    try:
+        import_symbol(name, category, Path(args.symbol).expanduser().resolve(), manifest_rows, report)
+    except ImportError_ as e:
+        print(f"ERROR: {e}")
+        lc.append_manifest_rows(ROOT, [["symbol", args.symbol, "", "ERROR", "", str(e)]])
+        return 1
+
+    fp_path = None
+    if args.footprint:
+        fp_path, fp_nick, fp_name, _ = import_footprint(
+            name, category, Path(args.footprint).expanduser().resolve(), manifest_rows, report
+        )
+
+        if args.model:
+            model_target = fp_path if fp_path is not None else None
+            import_model(name, category, Path(args.model).expanduser().resolve(), model_target, manifest_rows, report)
+
+        sym_path = ROOT / "symbols" / category / f"{name}.kicad_sym"
+        text = sym_path.read_text(encoding="utf-8")
+        new_ref = f"{fp_nick}:{fp_name}"
+        new_text, changed = lc.set_symbol_footprint_property(text, new_ref)
+        if changed:
+            sym_path.write_text(new_text, encoding="utf-8")
+            report.append(f"  Linked symbol Footprint property -> {new_ref}")
+        else:
+            report.append(
+                f"  NOTE: could not find a 'Footprint' property in {sym_path.relative_to(ROOT)} "
+                f"to update automatically -- set it manually to '{new_ref}'"
+            )
+
+    lc.append_manifest_rows(ROOT, manifest_rows)
+
+    sym_entries = lc.write_sym_lib_table(ROOT)
+    fp_entries = lc.write_fp_lib_table(ROOT)
+    report.append(f"Regenerated sym-lib-table ({len(sym_entries)} libraries) and fp-lib-table ({len(fp_entries)} libraries)")
+
+    print("\n".join(report))
+    print("\nOK.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
