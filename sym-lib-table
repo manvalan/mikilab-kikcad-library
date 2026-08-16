@@ -58,6 +58,7 @@
   (lib (name "MIKILAB_PCM9211PTR")(type "KiCad")(uri "${KIPRJMOD}/symbols/audio/PCM9211PTR.kicad_sym")(options "")(descr "PCM9211PTR"))
   (lib (name "MIKILAB_Sensor_Audio")(type "KiCad")(uri "${KIPRJMOD}/symbols/audio/Sensor_Audio.kicad_sym")(options "")(descr "Sensor_Audio"))
   (lib (name "MIKILAB_Si4684_A10_GM")(type "KiCad")(uri "${KIPRJMOD}/symbols/audio/Si4684-A10-GM.kicad_sym")(options "")(descr "Si4684-A10-GM"))
+  (lib (name "MIKILAB_TLV320AIC3104IRHBR")(type "KiCad")(uri "${KIPRJMOD}/symbols/audio/TLV320AIC3104IRHBR.kicad_sym")(options "")(descr "TLV320AIC3104IRHBR"))
   (lib (name "MIKILAB_Display_Character")(type "KiCad")(uri "${KIPRJMOD}/symbols/display/Display_Character.kicad_sym")(options "")(descr "Display_Character"))
   (lib (name "MIKILAB_Display_Graphic")(type "KiCad")(uri "${KIPRJMOD}/symbols/display/Display_Graphic.kicad_sym")(options "")(descr "Display_Graphic"))
   (lib (name "MIKILAB_Driver_Display")(type "KiCad")(uri "${KIPRJMOD}/symbols/display/Driver_Display.kicad_sym")(options "")(descr "Driver_Display"))
