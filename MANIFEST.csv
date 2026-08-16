@@ -536,3 +536,6 @@ footprint,,footprints/rf/rf_sma.pretty/MOLEX_0732511350.kicad_mod,UNCHANGED,b4f1
 3d-model,,3dmodels/other/TPS63020DSJT.step,UNCHANGED,165403e954f659b967ac7f7bd031d8af2d3f630642ea6dbbbdc97c3beeb7b317,category=other
 3d-model,,3dmodels/power/TPS7A2012PDBVR.step,UNCHANGED,2db36240c0d2f95ef1eb394a4da58912c347ad61f2d1b935e49e6f612c7cd0b2,category=power
 3d-model,,3dmodels/power/TPS7A2018PDBVR.step,UNCHANGED,7744368198b1fa542200083121f7916209a040646323615072aeadb4b1b308cc,category=power
+symbol,/var/folders/cv/lwgyj_k14gx2rc3t2rlt29s80000gn/T/snapeda_n_5b_7ct/RTL8211F-CG.kicad_sym,symbols/rf/RTL8211F-CG.kicad_sym,NEW,99bd99d2cfa6cde81e25b680cd3ac30a127573d3f83418ac62e0d47b2ca497c1,category=rf
+footprint,/var/folders/cv/lwgyj_k14gx2rc3t2rlt29s80000gn/T/snapeda_n_5b_7ct/QFN40P500X500X90-41N.kicad_mod,footprints/rf/RTL8211F-CG.pretty/QFN40P500X500X90-41N.kicad_mod,NEW,ee8ba3ce720469e9111dd95ab5e824d021ad5cf5334a556cd8e70344bfc2027a,category=rf
+3d-model,/var/folders/cv/lwgyj_k14gx2rc3t2rlt29s80000gn/T/snapeda_n_5b_7ct/RTL8211F-CG.step,3dmodels/rf/RTL8211F-CG.step,NEW,06fa2512102f9a8b07367cadc8ec75edcffe91ef037e582206f865dc552c09bb,category=rf

@@ -260,4 +260,5 @@
   (lib (name "MIKILAB_RF_Switch")(type "KiCad")(uri "${KIPRJMOD}/symbols/rf/RF_Switch.kicad_sym")(options "")(descr "RF_Switch"))
   (lib (name "MIKILAB_RF_WiFi")(type "KiCad")(uri "${KIPRJMOD}/symbols/rf/RF_WiFi.kicad_sym")(options "")(descr "RF_WiFi"))
   (lib (name "MIKILAB_RF_ZigBee")(type "KiCad")(uri "${KIPRJMOD}/symbols/rf/RF_ZigBee.kicad_sym")(options "")(descr "RF_ZigBee"))
+  (lib (name "MIKILAB_RTL8211F_CG")(type "KiCad")(uri "${KIPRJMOD}/symbols/rf/RTL8211F-CG.kicad_sym")(options "")(descr "RTL8211F-CG"))
 )
