@@ -33,7 +33,8 @@ ROOT = lc.LIBRARY_ROOT
 
 EXPECTED_TOP_LEVEL = {
     "symbols", "footprints", "3dmodels", "docs", "legacy", "scripts",
-    "sym-lib-table", "fp-lib-table", "MANIFEST.csv", "MANIFEST.md",
+    "sym-lib-table", "fp-lib-table", "sym-lib-table.global", "fp-lib-table.global",
+    "MANIFEST.csv", "MANIFEST.md",
     "README.md", ".git", ".claude", ".gitignore", ".DS_Store",
 }
 

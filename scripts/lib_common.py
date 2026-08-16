@@ -155,27 +155,27 @@ class LibEntry:
     options: str = ""
 
 
-def build_sym_table_entries(root: Path) -> list[LibEntry]:
+def build_sym_table_entries(root: Path, env_var: str = "KIPRJMOD") -> list[LibEntry]:
     used: set[str] = set()
     entries = []
 
     for path in discover_symbol_libraries(root):
         relative = path.relative_to(root)
         nickname = unique_nickname(sym_nickname(path), used)
-        uri = "${KIPRJMOD}/" + str(relative)
+        uri = "${" + env_var + "}/" + str(relative)
         entries.append(LibEntry(nickname=nickname, uri=uri, descr=path.stem))
 
     return entries
 
 
-def build_fp_table_entries(root: Path) -> list[LibEntry]:
+def build_fp_table_entries(root: Path, env_var: str = "KIPRJMOD") -> list[LibEntry]:
     used: set[str] = set()
     entries = []
 
     for path in discover_footprint_libraries(root):
         relative = path.relative_to(root)
         nickname = unique_nickname(fp_nickname(path), used)
-        uri = "${KIPRJMOD}/" + str(relative)
+        uri = "${" + env_var + "}/" + str(relative)
         entries.append(LibEntry(nickname=nickname, uri=uri, descr=path.name))
 
     return entries

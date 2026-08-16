@@ -43,23 +43,90 @@ automatically from the file/directory name and are guaranteed unique.
 
 ## 1. Installing the library
 
-Point KiCad at this directory's two lib-tables so its symbols and
-footprints show up in the schematic/PCB editors:
+There are two ways to make this library available in KiCad. Which one you
+want depends on whether you use it in one project or in every project.
 
-- **Symbols**: KiCad → Preferences → Manage Symbol Libraries → Global (or
-  Project) Libraries → add all entries from `sym-lib-table`, or simply
-  copy/merge this repo's `sym-lib-table` into your KiCad configuration
-  directory (or your project directory, if you set `KIPRJMOD` per
-  project).
-- **Footprints**: same, using `fp-lib-table` under Manage Footprint
-  Libraries.
-- Easiest in practice: open a KiCad project whose project directory *is*
-  (or contains a symlink/copy of) this library, so `${KIPRJMOD}` resolves
-  to `mikylab_kikad_library` automatically. Alternatively, define your own
-  KiCad environment variable (e.g. `MIKILAB`) pointing at this directory
-  and rewrite the two table files to use it instead of `${KIPRJMOD}` if
-  you want the library available across every project without copying
-  files.
+### Option A -- one project only (no KiCad config changes)
+
+`sym-lib-table` / `fp-lib-table` at the root of this repo use
+`${KIPRJMOD}`, which KiCad automatically resolves to *the currently open
+project's directory*. So if a `.kicad_pro` project lives directly inside
+`mikylab_kikad_library/` (or you copy these two table files into your
+project's directory), KiCad picks them up automatically -- no extra
+configuration needed. This is the setup `check_library.py` and the
+`scripts/` tooling assume.
+
+### Option B -- available in every project (recommended for a personal library)
+
+This is the practical setup for a library you want in every schematic you
+open, not just one project. Tested against the KiCad 10.0 install on this
+machine (`/Applications/KiCad/KiCad.app`, config at
+`~/Library/Preferences/kicad/10.0/`).
+
+1. **Define an environment variable pointing at this library.**
+   KiCad → Preferences → Configure Paths... → add a new entry:
+   - Name: `MIKILAB`
+   - Path: `/Users/michelebigi/Development/mikylab_kikad_library`
+
+2. **Generate the "global" table variant** (uses `${MIKILAB}` instead of
+   `${KIPRJMOD}`; regenerate any time after adding components):
+   ```
+   python3 scripts/generate_global_tables.py
+   ```
+   This writes `sym-lib-table.global` and `fp-lib-table.global` at the
+   library root.
+
+3. **Merge those into KiCad's global tables.** The simplest way is to
+   append their `(lib ...)` lines into your existing global tables (back
+   them up first):
+   ```
+   cp ~/Library/Preferences/kicad/10.0/sym-lib-table ~/Library/Preferences/kicad/10.0/sym-lib-table.bak
+   cp ~/Library/Preferences/kicad/10.0/fp-lib-table  ~/Library/Preferences/kicad/10.0/fp-lib-table.bak
+
+   python3 - <<'EOF'
+   import re
+   from pathlib import Path
+
+   kicad_dir = Path.home() / "Library/Preferences/kicad/10.0"
+   lib_root = Path("/Users/michelebigi/Development/mikylab_kikad_library")
+
+   for kind, global_file, generated in (
+       ("sym_lib_table", "sym-lib-table", "sym-lib-table.global"),
+       ("fp_lib_table", "fp-lib-table", "fp-lib-table.global"),
+   ):
+       target = kicad_dir / global_file
+       new_libs = (lib_root / generated).read_text().splitlines()
+       new_libs = [l for l in new_libs if l.strip().startswith("(lib")]
+
+       text = target.read_text()
+       # insert the new (lib ...) lines just before the final closing paren
+       idx = text.rstrip().rfind(")")
+       text = text.rstrip()[:idx] + "\n" + "\n".join(new_libs) + "\n" + text.rstrip()[idx:] + "\n"
+       target.write_text(text)
+       print(f"Merged {len(new_libs)} libraries into {target}")
+   EOF
+   ```
+   (Or do it by hand: open both `.global` files and copy each `(lib
+   ...)` line into the corresponding file under
+   `~/Library/Preferences/kicad/10.0/`, just before the final closing
+   `)`.)
+
+4. Restart KiCad. Every `MIKILAB_*` symbol and footprint library is now
+   available in any project, resolved via `${MIKILAB}`.
+
+**Known issue on this machine, to clean up before deleting
+`kicad-personal-library`:** the current global `sym-lib-table` already
+has a handful of entries pointing directly at
+`/Users/michelebigi/Development/kicad-personal-library/...` with absolute
+paths (added before this library existed, e.g. libraries named `ti`,
+`TPS63020DSJT`). Once the `MIKILAB_*` libraries above are installed and
+working, remove those old absolute-path entries from
+`~/Library/Preferences/kicad/10.0/sym-lib-table` -- otherwise you'll have
+duplicate/stale libraries, and deleting `kicad-personal-library` will
+leave KiCad with broken references. This library's own tables never
+contain absolute paths (verified by `check_library.py` and by `grep -R
+"/Users/michelebigi"`), so this cleanup is only about your existing
+global KiCad config, not about anything in this repo.
 
 ## 2. Using the symbols
 
