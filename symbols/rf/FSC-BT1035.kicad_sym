@@ -13,7 +13,7 @@
 			(at -20.32 -34.29 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MIKILAB_FSC_BT1035:FSC-BT1035"
 			(at 0 0 0)
 			(effects (font (size 1.27 1.27)) hide)
 		)

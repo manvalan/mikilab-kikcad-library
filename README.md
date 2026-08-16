@@ -258,31 +258,35 @@ reference *standard* KiCad footprint libraries (e.g. `Package_SO`,
 scope (they ship with every KiCad install) and are not checked or
 reported as errors.
 
-### FSC-BT1035 (symbol only, hand-authored -- footprint still needed)
+### FSC-BT1035 (Feasycom Bluetooth module)
 
 `symbols/rf/FSC-BT1035.kicad_sym` (Feasycom Bluetooth 5.2 dual-mode
 stereo audio module, Qualcomm QCC3056) was hand-authored from the
 official [Feasycom datasheet](https://www.feasycom.com/datasheet/fsc-bt1035.pdf)
 Table 3-2 (Pin definition) -- all 52 pins, names and electrical types
 transcribed directly from that table and validated with `kicad-cli sym
-export`. No existing KiCad symbol for this part could be found publicly
-(SnapEDA blocks unauthenticated access; no GitHub project had one).
+export`.
 
-**No footprint or 3D model is included.** The datasheet's mechanical
-section (module 13 x 26.9 x 2.2mm, castellated LCC-52 package, 1.0mm pad
-pitch, antenna keep-out on one edge) has enough detail to build one, but
-extracting exact per-pad coordinates reliably from the PDF's dimensioned
-drawing (rather than a real coordinate table) was judged too
-error-prone to commit blind -- a wrong castellated-pad footprint could
-produce an unfabricatable board without anyone noticing until parts
-don't line up. A working footprint for this exact part does exist
-(fabricated, per the gerbers) in `manvalan/DigiRadio`'s EasyEDA project,
-but its pad geometry is embedded in EasyEDA's proprietary JSON format,
-which wasn't reverse-engineered here. Import a verified footprint (e.g.
-from a SnapEDA KiCad download, or by exporting the DigiRadio EasyEDA
-footprint to KiCad format) with `scripts/import_snapeda.py` or
-`scripts/add_component.py --name FSC-BT1035 --footprint ...` -- it will
-detect the existing symbol and only need the footprint/model added.
+`footprints/rf/FSC-BT1035.pretty/FSC-BT1035.kicad_mod` was reconstructed
+from the actual PCB footprint in `manvalan/DigiRadio`'s EasyEDA Pro
+project (a fabricated, gerber-verified design) by extracting the raw pad
+records from that project's internal document format (JSON-Lines with
+`PAD`/`POLY` records per document; the relevant footprint document was
+located, isolated, and parsed directly -- KiCad's own `epro2kicad`
+converter couldn't be used as-is, since this newer EasyEDA Pro export
+bundles all documents into one multi-record file rather than the
+per-document files it expects). Notably, that project's component was
+originally sourced from a SnapEDA export for the mechanically-compatible
+**FSC-BT806** (same manufacturer, same 13 x 26.9mm 52-pad castellated
+family package used across BT806/BT1026/BT1035/BT1038) and relabeled
+`FSC-BT1035` by the designer; the extracted pad size (1.6 x 0.6mm) and
+pitch (1.0mm) match the official FSC-BT1035 datasheet's own mechanical
+spec exactly, and the pad numbering follows a single clean perimeter
+walk (left column top-to-bottom, bottom row left-to-right, right column
+bottom-to-top) identical to the datasheet's own Table 3-2 pin order, so
+`pad N` = `pin N` throughout. Rounded body corners were simplified to
+straight lines in the silkscreen (cosmetic only, no pad geometry
+affected). No 3D model is included.
 
 ## Provenance
 
