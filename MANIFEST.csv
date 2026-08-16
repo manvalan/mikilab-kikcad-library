@@ -9,7 +9,9 @@ symbol,,symbols/analog/Diode_Laser.kicad_sym,UNCHANGED,478fe5fbe5f42b8cb7dc8db3a
 symbol,,symbols/analog/Diode_Official.kicad_sym,UNCHANGED,f46947ae638b9029ccb3ecbbee19e7b42ffcc516f509fe1d3329544c291215b4,"renamed from auto-generated 'Diode_2.kicad_sym'; this file is byte-identical to the upstream official KiCad Diode.kicad_sym and collided (case-insensitive filesystem) with the smaller custom symbols/analog/diode.kicad_sym -- both kept, distinct names"
 symbol,,symbols/analog/Driver_FET.kicad_sym,UNCHANGED,fd41073b11a1ce07089b52baaaff60c03d77ea39cffc0d7ef7d8d2c1e8ebe9dd,category=analog
 symbol,,symbols/analog/Driver_Relay.kicad_sym,UNCHANGED,7f76cb8d58c7f6220191e323e8b83e557f30d3aa9bb86cba792f826ec9deb6c4,category=analog
+symbol,,symbols/analog/FDC608PZ.kicad_sym,UNCHANGED,de98bcae2cb63b32c0c28a175c387973d84e3d735b1212d8dae6c5fe5b6ad9f2,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only (P-channel MOSFET; no matching local footprint file)"
 symbol,,symbols/analog/Filter.kicad_sym,UNCHANGED,74021baa94f143c3431cc7419a756791da6b725f54647dfead240c76e1a89225,category=analog
+symbol,,symbols/analog/IMN10T108.kicad_sym,UNCHANGED,9a3c70248880baf994d5dad880e7a6d1a6716f61cb3dcf262a68f35a770a4dbc,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only (triple switching diode; no matching local footprint file)"
 symbol,,symbols/analog/Isolator_Analog.kicad_sym,UNCHANGED,96b668b8b026f57ab084a88b0ae1532a74dbaf6311d328aad1d65525f29b743e,category=analog
 symbol,,symbols/analog/Reference_Current.kicad_sym,UNCHANGED,62dd1b3c66024e6791b0b40c590665fa12c589d64a0c9074c6a6e27eedbf812e,category=analog
 symbol,,symbols/analog/Reference_Voltage.kicad_sym,UNCHANGED,b0ec5f09481583789eb94a217358fb86e69486d22e0ce1b92ffcfacce14576fd,category=analog
@@ -36,14 +38,23 @@ symbol,,symbols/analog/Transistor_FET.kicad_sym,UNCHANGED,48f5f0391ea5e44f8fcd71
 symbol,,symbols/analog/Transistor_FET_Other.kicad_sym,UNCHANGED,f1349f77de8299faaa01f34e95d9e4e6d61b3a9fd916f93039f0e4593a95346b,category=analog
 symbol,,symbols/analog/Transistor_IGBT.kicad_sym,UNCHANGED,6db2bbf4656c047797c47b7c48a54ee2490dcfac72ff61158f16ba91a2f4d019,category=analog
 symbol,,symbols/analog/diode.kicad_sym,UNCHANGED,108219ff16cda5568ed7fbde04d1b647d4b2cf7a1659191ee9c2c5e318dc2fc2,"custom small diode/LED/zener library (D, LED, ZENER); case-insensitive-collided with the upstream official Diode.kicad_sym, which was renamed to Diode_Official.kicad_sym"
+symbol,,symbols/audio/ADAU1467WBCPZ300RL.kicad_sym,UNCHANGED,9b15507adeae900dbe896bd0be4f363f2deef2b88abc91f41c5460fc1d223da5,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries (legacy .lib, converted via kicad-cli sym upgrade)"
+symbol,,symbols/audio/AK5384.kicad_sym,UNCHANGED,b3718221c18c5a466e1e255c6789a58b990e74384ef03195774cccf5e19f17c4,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only (extracted from fdsp_converter.lib; no matching local footprint file)"
 symbol,,symbols/audio/Amplifier_Audio.kicad_sym,UNCHANGED,5b91dc209a67eddb6987810235945d0f9f3c56c4f667f11340771b11cb764cfc,category=audio
 symbol,,symbols/audio/Audio.kicad_sym,UNCHANGED,de3460975fdaa4b4e08930bf385375c4ae9bcbe04a0c107a0d5d0e26f207f4aa,category=audio
+symbol,,symbols/audio/CS8421-CZZ.kicad_sym,UNCHANGED,97bfef803dae82281ef29fc1c1cb5efeaffbb1e46fbe697557c93f65561f60bb,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only (no matching local footprint file; Footprint property left as the bare upstream IPC name 'SOP65P640X110-20N', not yet linked to a library)"
+symbol,,symbols/audio/Combo384.kicad_sym,UNCHANGED,8cd0a34b0a0d3e205abdb16c4c7cad4c2865056438af098bb7b3206f7591a607,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries (extracted from Combo384.lib, which also contained MW-1466CORE)"
 symbol,,symbols/audio/Connector_Audio.kicad_sym,UNCHANGED,bb95bfecbc9bdf4499ec28881962e5ee5108ec7735cac6db7e00d2af7e915f3c,category=audio
 symbol,,symbols/audio/DSP_AnalogDevices.kicad_sym,UNCHANGED,093703668c0b8259919670f4c36457f808f9f6c12d8afead7019084a297c8fb2,category=audio
 symbol,,symbols/audio/DSP_Freescale.kicad_sym,UNCHANGED,e702171bd5231415247cb9e3d7cd3229c5825109387ff4c42f26e95052e31d6f,category=audio
 symbol,,symbols/audio/DSP_Microchip_DSPIC33.kicad_sym,UNCHANGED,efcd9d8f30eb06903c2433c0a40cfd222c7baa1666d17c5c9e41441b09a61796,category=audio
 symbol,,symbols/audio/DSP_Motorola.kicad_sym,UNCHANGED,02f6d60268806213331ca35b91ab43b0823b56d29a324bd6b1ef4b799c058d37,category=audio
 symbol,,symbols/audio/DSP_Texas.kicad_sym,UNCHANGED,f68beafe655a2853b821a9c58980ddb42a3b08032afd6718f10191ce6fd90ffd,category=audio
+symbol,,symbols/audio/LME49720MA.kicad_sym,UNCHANGED,2a2c2c8738a14d3dbbfab85024adfacf4a957a48874f1bbe8d3258fdc188ac7b,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only; Footprint property repointed to the existing shared MIKILAB_ipc_soic:IPC_SOIC127P600X175-8N (exact IPC match already in this library, avoids duplicating the footprint)"
+symbol,,symbols/audio/MW-1466CORE.kicad_sym,UNCHANGED,6ee1e158e000ae5619d7084c7041b1db4a73fbe0b84a7ff31b940e025854162f,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries; FreeDSP's ADAU1466 SigmaDSP core module (extracted from Combo384.lib)
+symbol,,symbols/audio/PCM1808QPWRQ1.kicad_sym,UNCHANGED,0e5aa8a504882af7941699ec61a5432c5ae049d2a1f5267d1ce41a48c17cb493,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries (legacy .lib, converted via kicad-cli sym upgrade)"
+symbol,,symbols/audio/PCM1861DBT.kicad_sym,UNCHANGED,7ec6d4805a2c10d9348ab1ddbaf559fdaaf7875c039078ed4dc2d57d4ffb645d,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries, symbol only (no matching local footprint file; Footprint property left as bare upstream IPC name)"
+symbol,,symbols/audio/PCM9211PTR.kicad_sym,UNCHANGED,04a3489abb5b082b15fb1d5f5cb8af61b2281f6e9870baa9287de78d03dd00b4,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries (legacy .lib, converted via kicad-cli sym upgrade)"
 symbol,,symbols/audio/Sensor_Audio.kicad_sym,UNCHANGED,db449767efbe850008ea9e5cdc980b2a45ec5c579a1d912dc7846acde93282d3,category=audio
 symbol,,symbols/display/Display_Character.kicad_sym,UNCHANGED,b3998eabbf4b26380b18ff115cab587e81afe3c14f282b6467e88e9caece9588,category=display
 symbol,,symbols/display/Display_Graphic.kicad_sym,UNCHANGED,492a0236abdd340f04d6cdbf6011c7539da9302147833c9d6e3eedde52099c77,category=display
@@ -95,7 +106,7 @@ symbol,,symbols/microcontrollers/CPU_NXP_6800.kicad_sym,UNCHANGED,e5d69b4a12b805
 symbol,,symbols/microcontrollers/CPU_NXP_68000.kicad_sym,UNCHANGED,31c9dc8245ca9cbd4b649a50bd39e0be97cee269b17a0bcc553b8e03c986f8dc,category=microcontrollers
 symbol,,symbols/microcontrollers/CPU_NXP_IMX.kicad_sym,UNCHANGED,24a219dc54abe961271ff597050e46f466c56bd92cf3b2edf54fcd90c66f6e4c,category=microcontrollers
 symbol,,symbols/microcontrollers/CPU_PowerPC.kicad_sym,UNCHANGED,061cb04687f32f63f8110c43b22c58a550e54f6b2f3772632ec78d8484bfddd4,category=microcontrollers
-symbol,,symbols/microcontrollers/ESP32-S31-WROOM-3.kicad_sym,UNCHANGED,2eeba228f0636e69e41538f8231f77422cfa009cd357174bfcd15e2da82902ed,category=microcontrollers
+symbol,,symbols/microcontrollers/ESP32-S31-WROOM-3.kicad_sym,UNCHANGED,72c7e5cee07682ce10bd238552c51d4185dec661b2f04f64e96949ef6502d561,"easyeda2kicad.py export had an unquoted URL in (generator ...), which broke KiCad's parser and made the whole library silently fail to load; fixed by quoting the value"
 symbol,,symbols/microcontrollers/MCU_AnalogDevices.kicad_sym,UNCHANGED,eceed6c63ac3ba85e86e92120e4a5416bbbbe0f43a90e9b64ec72d65fa390824,category=microcontrollers
 symbol,,symbols/microcontrollers/MCU_Cypress.kicad_sym,UNCHANGED,a73fa1c41113e74076ec6b66c7c6a952f0a329898d790a8f0991d62811d0bab3,category=microcontrollers
 symbol,,symbols/microcontrollers/MCU_Dialog.kicad_sym,UNCHANGED,3cdaf019ecf51b423fbe9c211346b2769d6e7d4b00c0c543b1bb8298d477a7e4,category=microcontrollers
@@ -228,6 +239,11 @@ symbol,,symbols/rf/RF_RFID.kicad_sym,UNCHANGED,ea845001b3c3753c365db1071b7152708
 symbol,,symbols/rf/RF_Switch.kicad_sym,UNCHANGED,2e9e15440662cdf4278a542814d9392677ce08fff824292da1f92a6396b5f266,category=rf
 symbol,,symbols/rf/RF_WiFi.kicad_sym,UNCHANGED,72ee13439acd562570d5c8b9a830c7044b26e1c0dea93f6973fb5518e26781a2,category=rf
 symbol,,symbols/rf/RF_ZigBee.kicad_sym,UNCHANGED,301df8379d8df7fc85ee9d3515f260fe9574a251beaa761dbf40dd661c64def4,category=rf
+footprint,,footprints/audio/ADAU1467WBCPZ300RL.pretty/ADAU1467WBCPZ300.kicad_mod,UNCHANGED,0610b438e1e01d2e2a9d20d6e67c452a128fa729bb141d4fd496d9ccc8940f6c,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries; had two broken 3D model refs (bare filename + ${KICAD_USER_TEMPLATE_DIR}), replaced with a single ${KIPRJMOD}-relative reference"
+footprint,,footprints/audio/Combo384.pretty/Combo384.kicad_mod,UNCHANGED,d0fd2c7768222690b6aece4353c05b126daee59ce90955506c69c0b900f5cce0,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries
+footprint,,footprints/audio/MW-1466CORE.pretty/MW-1466CORE.kicad_mod,UNCHANGED,0730f98611d93674e25780ef5ee037d5a89eaa15e42f3d895636d763ded0224a,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries
+footprint,,footprints/audio/PCM1808QPWRQ1.pretty/PCM1808QPWRQ1.kicad_mod,UNCHANGED,c04c24d9cd5ce1ecf84e802cc7a97fd4ccec9370c1f883158819949890d438dc,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries; original 3D model ref was an ABSOLUTE PATH to the upstream maintainer's own machine (/Users/HILO/...), replaced with a ${KIPRJMOD}-relative reference"
+footprint,,footprints/audio/PCM9211PTR.pretty/PCM9211PTR.kicad_mod,UNCHANGED,9ede5fb84e26df5b8975917212672075c79b8d3538f591cfb509c124f86bcec4,"imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries; had two broken 3D model refs (bare filename + ${KICAD_USER_TEMPLATE_DIR}), replaced with a single ${KIPRJMOD}-relative reference"
 footprint,,footprints/display/lcd_kingtech.pretty/KINGTECH_DW0240A2BZ.kicad_mod,UNCHANGED,eb2b1b9593cd875074e9eb1d60dc642a6273e6ca875d857778c83d37c209a44c,category=display;library=lcd_kingtech.pretty
 footprint,,footprints/display/lcd_kingtech.pretty/KINGTECH_DW0240A2BZ_PANEL.kicad_mod,UNCHANGED,52175852271679dcf0cc65dba3aebb2575b6f64c0a796666881530d84fc85145,category=display;library=lcd_kingtech.pretty
 footprint,,footprints/display/lcd_kingtech.pretty/PV043WV-BICA3001_DSI.kicad_mod,UNCHANGED,902aa6cd1e6216f0b5657ce207b93d169879df34fbba3445a7ef697180af8037,category=display;library=lcd_kingtech.pretty
@@ -457,6 +473,9 @@ footprint,,footprints/rf/hackrf_expansion.pretty/HACKRF_ONE_EXPANSION.kicad_mod,
 footprint,,footprints/rf/rf_sma.pretty/EMERSON_142-0701-801.kicad_mod,UNCHANGED,b2eca23c1e296c820484b7c06660afd53aeb4a1d0be256a717b915d2224e4798,category=rf;library=rf_sma.pretty
 footprint,,footprints/rf/rf_sma.pretty/EMERSON_142-0701-801_4layer.kicad_mod,UNCHANGED,9dd3b712288d13cb5289a566a039cff7288c90326d4c3e7d0dd907b45932d641,category=rf;library=rf_sma.pretty
 footprint,,footprints/rf/rf_sma.pretty/MOLEX_0732511350.kicad_mod,UNCHANGED,b4f1519dd6835e124a551fb38c578738dcf8d08cfa34f5fc8ad588d231781fb8,category=rf;library=rf_sma.pretty
+3d-model,,3dmodels/audio/ADAU1467WBCPZ300RL.stp,UNCHANGED,7bfd7698b54aa4e4a3fa4b4907c0c9d92733d0458a7fc64d2bbb9247e55ccad4,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries
+3d-model,,3dmodels/audio/PCM1808QPWRQ1.stp,UNCHANGED,b9f7ef76b651460fd876415e93a34e5c2394052fae253a8ce4309f678f10fe5e,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries
+3d-model,,3dmodels/audio/PCM9211PTR.stp,UNCHANGED,3b1031a4f132e82db18789ca9ae833215f7279d77c58b3976e3fcce7ba0a2f3b,imported from https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries
 3d-model,,3dmodels/other/TPS63020DSJT.step,UNCHANGED,165403e954f659b967ac7f7bd031d8af2d3f630642ea6dbbbdc97c3beeb7b317,category=other
 3d-model,,3dmodels/power/TPS7A2012PDBVR.step,UNCHANGED,2db36240c0d2f95ef1eb394a4da58912c347ad61f2d1b935e49e6f612c7cd0b2,category=power
 3d-model,,3dmodels/power/TPS7A2018PDBVR.step,UNCHANGED,7744368198b1fa542200083121f7916209a040646323615072aeadb4b1b308cc,category=power

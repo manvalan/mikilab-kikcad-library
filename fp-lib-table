@@ -1,5 +1,10 @@
 (fp_lib_table
   (version 7)
+  (lib (name "MIKILAB_ADAU1467WBCPZ300RL")(type "KiCad")(uri "${KIPRJMOD}/footprints/audio/ADAU1467WBCPZ300RL.pretty")(options "")(descr "ADAU1467WBCPZ300RL.pretty"))
+  (lib (name "MIKILAB_Combo384")(type "KiCad")(uri "${KIPRJMOD}/footprints/audio/Combo384.pretty")(options "")(descr "Combo384.pretty"))
+  (lib (name "MIKILAB_MW_1466CORE")(type "KiCad")(uri "${KIPRJMOD}/footprints/audio/MW-1466CORE.pretty")(options "")(descr "MW-1466CORE.pretty"))
+  (lib (name "MIKILAB_PCM1808QPWRQ1")(type "KiCad")(uri "${KIPRJMOD}/footprints/audio/PCM1808QPWRQ1.pretty")(options "")(descr "PCM1808QPWRQ1.pretty"))
+  (lib (name "MIKILAB_PCM9211PTR")(type "KiCad")(uri "${KIPRJMOD}/footprints/audio/PCM9211PTR.pretty")(options "")(descr "PCM9211PTR.pretty"))
   (lib (name "MIKILAB_lcd_kingtech")(type "KiCad")(uri "${KIPRJMOD}/footprints/display/lcd_kingtech.pretty")(options "")(descr "lcd_kingtech.pretty"))
   (lib (name "MIKILAB_altera")(type "KiCad")(uri "${KIPRJMOD}/footprints/fpga_cpld/altera.pretty")(options "")(descr "altera.pretty"))
   (lib (name "MIKILAB_lattice")(type "KiCad")(uri "${KIPRJMOD}/footprints/fpga_cpld/lattice.pretty")(options "")(descr "lattice.pretty"))

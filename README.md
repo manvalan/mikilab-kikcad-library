@@ -254,6 +254,33 @@ import are marked `UNCHANGED`/baseline; rows added by
 exactly what happened during that import (new file, deduplicated,
 renamed due to a real collision, or error).
 
+### Components imported from FreeDSP
+
+The following `audio`/`analog` category chips were imported from
+[FreeDSP_ki-CAD_Libraries](https://github.com/freeDSP/FreeDSP_ki-CAD_Libraries)
+(legacy KiCad `.lib`/`.dcm` format, converted to modern `.kicad_sym` via
+`kicad-cli sym upgrade`): `ADAU1467WBCPZ300RL`, `PCM1808QPWRQ1`,
+`PCM9211PTR`, `Combo384`, `MW-1466CORE` (FreeDSP's ADAU1466 core module),
+`LME49720MA`, `CS8421-CZZ`, `PCM1861DBT`, `FDC608PZ`, `IMN10T108`,
+`AK5384`. `PCM1681-Q1` was skipped (it's a KiCad `extends` variant of
+`PCM1681` and can't be split into a standalone file without duplicating
+`PCM1681`'s graphics -- import `PCM1681` if you need the automotive
+variant, base symbol is identical for schematic purposes).
+
+Notable fixes applied during that import (see `MANIFEST.csv` notes for
+the affected files): `PCM1808QPWRQ1`'s footprint had an absolute 3D model
+path pointing at the upstream maintainer's own machine
+(`/Users/HILO/...`); `ADAU1467WBCPZ300RL` and `PCM9211PTR`'s footprints
+had two dead 3D model references each (`${KICAD_USER_TEMPLATE_DIR}` and a
+bare filename). All three were corrected to `${KIPRJMOD}`-relative
+references pointing at the STEP files now under `3dmodels/audio/`.
+`LME49720MA` was imported symbol-only, with its `Footprint` property
+repointed at this library's existing `MIKILAB_ipc_soic:IPC_SOIC127P600X175-8N`
+(an exact IPC-standard match already present) instead of duplicating a
+generic SOIC-8 footprint. Several FreeDSP parts already covered by the
+official mirrored libraries (`PCM5102A`, `INA194`, `AZ1117-3.3`,
+`ADAU1452`) were intentionally *not* re-imported.
+
 ## Source safety
 
 This library was built by copying (never moving) from external source
