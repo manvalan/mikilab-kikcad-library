@@ -119,6 +119,14 @@ def check_symbols(report: Report) -> list[tuple[str, Path]]:
         if not parens_balanced(text):
             report.error(f"[SYM] {path.relative_to(ROOT)}: unbalanced parentheses")
 
+        gen_m = re.search(r'\(generator\s+([^\s")]+)', text)
+        if gen_m and re.search(r'[:/]', gen_m.group(1)):
+            report.error(
+                f"[SYM] {path.relative_to(ROOT)}: unquoted '(generator {gen_m.group(1)})' "
+                f"contains ':' or '/' -- this breaks KiCad's parser and silently makes the "
+                f"whole library fail to load; wrap the value in double quotes"
+            )
+
         digest = lc.sha256_file(path)
         if digest in seen_hash:
             report.warn(

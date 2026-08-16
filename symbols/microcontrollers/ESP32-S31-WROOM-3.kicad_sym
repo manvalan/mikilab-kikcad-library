@@ -1,6 +1,6 @@
 (kicad_symbol_lib
   (version 20211014)
-  (generator https://github.com/uPesy/easyeda2kicad.py)
+  (generator "https://github.com/uPesy/easyeda2kicad.py")
 
   (symbol "ESP32-S31-WROOM-3_C9900281993"
     (in_bom yes)
