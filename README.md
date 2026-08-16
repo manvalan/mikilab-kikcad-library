@@ -281,6 +281,32 @@ generic SOIC-8 footprint. Several FreeDSP parts already covered by the
 official mirrored libraries (`PCM5102A`, `INA194`, `AZ1117-3.3`,
 `ADAU1452`) were intentionally *not* re-imported.
 
+### Espressif modules
+
+19 module symbols (each with footprint + 3D model) were imported from
+the official [espressif/kicad-libraries](https://github.com/espressif/kicad-libraries)
+repository: `ESP32-C3-MINI-1`, `ESP32-C3-WROOM-02`, `ESP32-C5-WROOM-1`,
+`ESP32-C5-WROOM-1U`, `ESP32-C6-MINI-1/U`, `ESP32-C6-WROOM-1`,
+`ESP32-H2-MINI-1`, `ESP32-MINI-1`, `ESP32-S2-MINI-1`, `ESP32-S2-SOLO`,
+`ESP32-S2-WROOM`, `ESP32-S2-WROVER`, `ESP32-S3-MINI-1`,
+`ESP32-S3-WROOM-1`, `ESP32-S3-WROOM-2`, `ESP32-S31-WROOM-3`,
+`ESP32-WROOM-E`, `ESP32-WROVER-E`, `ESP8684-WROOM-02C/U`. Bare SoC/die
+symbols (`ESP32`, `ESP32-C3`, `ESP32-S3`, `ESP8266`, ...) and DevKit
+board symbols were skipped -- they have no footprint of their own (dies)
+or aren't components you'd place on your own board (dev boards).
+`ESP32-S31-WROOM-3` **replaces** an earlier `easyeda2kicad.py`-exported
+version that had a fatal unquoted-URL syntax error in `(generator ...)`
+(see the earlier commit fixing that bug) -- the official symbol/footprint
+is used now instead.
+
+All 19 footprints originally referenced their 3D model via
+`${KICAD8_3RD_PARTY}` / `${KICAD9_3RD_PARTY}` (the path KiCad's Plugin
+and Content Manager uses when a library is installed through it). Since
+this library is not PCM-installed, that variable is never defined here;
+the references were repointed to `${KIPRJMOD}/3dmodels/microcontrollers/`
+using the STEP files copied in alongside each part, so every model
+resolves without needing PCM or any extra KiCad configuration.
+
 ## Source safety
 
 This library was built by copying (never moving) from external source
