@@ -225,6 +225,19 @@ python3 scripts/import_batch.py --source /path/to/batch_dir [--category power]
 subdirectory required, footprint/model optional — same collision and
 lib-table rules as a single import, applied per component).
 
+To import directly from a SnapEDA (SnapMagic Search) "Download KiCad"
+zip, without unzipping it by hand first:
+
+```
+python3 scripts/import_snapeda.py --zip ~/Downloads/PARTNUMBER.zip [--name ...] [--category ...]
+```
+
+It unzips to a temp directory, locates the `.kicad_sym` / `.kicad_mod` /
+3D model inside by extension (SnapEDA's internal folder layout varies
+between downloads), and hands off to the same
+`import_component.py` core -- identical validation, collision handling,
+and lib-table regeneration as every other import path here.
+
 ## 6. Running the check
 
 ```
@@ -244,6 +257,32 @@ reference *standard* KiCad footprint libraries (e.g. `Package_SO`,
 `RF_Module`) by their upstream nickname — those are outside MIKILAB's
 scope (they ship with every KiCad install) and are not checked or
 reported as errors.
+
+### FSC-BT1035 (symbol only, hand-authored -- footprint still needed)
+
+`symbols/rf/FSC-BT1035.kicad_sym` (Feasycom Bluetooth 5.2 dual-mode
+stereo audio module, Qualcomm QCC3056) was hand-authored from the
+official [Feasycom datasheet](https://www.feasycom.com/datasheet/fsc-bt1035.pdf)
+Table 3-2 (Pin definition) -- all 52 pins, names and electrical types
+transcribed directly from that table and validated with `kicad-cli sym
+export`. No existing KiCad symbol for this part could be found publicly
+(SnapEDA blocks unauthenticated access; no GitHub project had one).
+
+**No footprint or 3D model is included.** The datasheet's mechanical
+section (module 13 x 26.9 x 2.2mm, castellated LCC-52 package, 1.0mm pad
+pitch, antenna keep-out on one edge) has enough detail to build one, but
+extracting exact per-pad coordinates reliably from the PDF's dimensioned
+drawing (rather than a real coordinate table) was judged too
+error-prone to commit blind -- a wrong castellated-pad footprint could
+produce an unfabricatable board without anyone noticing until parts
+don't line up. A working footprint for this exact part does exist
+(fabricated, per the gerbers) in `manvalan/DigiRadio`'s EasyEDA project,
+but its pad geometry is embedded in EasyEDA's proprietary JSON format,
+which wasn't reverse-engineered here. Import a verified footprint (e.g.
+from a SnapEDA KiCad download, or by exporting the DigiRadio EasyEDA
+footprint to KiCad format) with `scripts/import_snapeda.py` or
+`scripts/add_component.py --name FSC-BT1035 --footprint ...` -- it will
+detect the existing symbol and only need the footprint/model added.
 
 ## Provenance
 
@@ -280,6 +319,43 @@ repointed at this library's existing `MIKILAB_ipc_soic:IPC_SOIC127P600X175-8N`
 generic SOIC-8 footprint. Several FreeDSP parts already covered by the
 official mirrored libraries (`PCM5102A`, `INA194`, `AZ1117-3.3`,
 `ADAU1452`) were intentionally *not* re-imported.
+
+### Si4684-A10-GM (unmerged upstream MR, use with care)
+
+`symbols/audio/Si4684-A10-GM.kicad_sym` (Silicon Labs/Skyworks
+single-chip FM/DAB/DAB+ radio receiver) was extracted from
+[kicad-symbols MR !4782](https://gitlab.com/kicad/libraries/kicad-symbols/-/merge_requests/4782),
+which as of this import is **open and unmerged** (`cannot_be_merged`,
+has conflicts, failing CI pipeline, tagged "needs v9 format upgrade").
+It is not part of the official kicad-symbols release this library
+otherwise mirrors. Before importing it here it was independently
+verified with `kicad-cli sym export` (parses correctly) and checked for
+48 unique, non-duplicate pins matching its QFN-48 package. Symbol only
+-- its `Footprint` property points at the standard
+`Package_DFN_QFN:QFN-48-1EP_7x7mm_P0.5mm_EP5.3x5.3mm` (resolved via your
+global KiCad footprint table, same as other official-mirror symbols),
+no MIKILAB-local footprint or 3D model exists for it. Given its
+provenance, its pin *names* were cross-checked against the public
+[Skyworks product summary](https://www.skyworksinc.com/-/media/SkyWorks/SL/documents/public/product-summaries/Si4684-A10_PS.pdf)
+-- all 24 signal names in that document's block diagram (RFREF, VHFI,
+VHFSW, LOUT, ROUT, DCLK, DFS, DOUT, SCLK, SSB, MISO, MOSI, VIO, VA,
+VCORE, VMEM, XTALI, XTALO, NVSCLK, NVSSB, NVMOSI, NVMISO, INTB, RSTB)
+are present with sensible pin numbers, and the remaining pins
+(ABYP/DACREF/DBYP bypass, SMODE, 4x GNDD, several NC) are consistent
+with a 48-pin QFN. That 4-page public summary does **not** include a
+full numbered pinout table, though (Skyworks gates the full Si468x
+datasheet behind an NDA). As a second, independent cross-check, the pin
+numbering was compared against the `SI4684`/`SI4684 SMD` symbols in
+[PE5PVB/SI4684-DAB-Receiver](https://github.com/PE5PVB/SI4684-DAB-Receiver)
+(a built, gerber-fabricated real project) -- of the 44 pin
+numbers directly comparable (PE5PVB's symbol also carries an unrelated
+second IC's pins under duplicate numbers, and its own naming has 4 clear
+typos: `NVCLK`/`DSF`/`MVMISO`/`NVMOS` vs. the grammatically-consistent
+`NVSCLK`/`DFS`/`NVMISO`/`NVMOSI`), **all 44 agree exactly** with the
+symbol imported here. That two independent, unrelated sources converge
+on the same pin map is reasonably strong (if still not authoritative)
+confirmation; verify against the full NDA'd datasheet if you have access
+before finalizing a schematic around this part.
 
 ### Espressif modules
 
